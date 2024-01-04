@@ -1,9 +1,12 @@
 const http=require('http');
 const fs=require('fs'); 
+const_=require('lodash');
 const server=http.createServer((req,res)=>{
       console.log("server created"); 
+      let num=_.random(0,20);
+      console.log(num);
       let path='/.render';  
-      switch(req.url){
+      /*switch(req.url){
         case '/': 
         path+='/babar2.html'; 
         res.statusCode=302;
@@ -20,6 +23,8 @@ const server=http.createServer((req,res)=>{
 
         
       };
+      */
+      
       fs.readFile(path,(error,datafile)=>{
         if(error){
             console.log('file error');
