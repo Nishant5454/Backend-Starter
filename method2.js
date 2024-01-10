@@ -2,7 +2,10 @@ const express=require("express");
 const { keys } = require('lodash');
 const mat=express(); 
 
-mat.use(express.json());//MiddleWare Function 
+mat.use(function(req,res,next){
+    console.log("Middleware"); 
+    next();
+})
 mat.listen(5000);
 
 let users=[ 

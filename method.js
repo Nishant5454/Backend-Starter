@@ -36,8 +36,10 @@ userouter
 .route('/') 
 .get(getUser)
 .post(postUser)
-.delete(DeleteUser);
-userouter.route("/:id").get(getUserbyId);
+.delete(DeleteUser);  
+
+
+userouter.route("/:post").post(postUser)
 
 
 
@@ -77,7 +79,7 @@ function getUserbyId(req,res){
     let paramsId=req.params.id; 
     let obj={}; 
     for(let i=0;i<user.length;i++){
-        if(user[i]['id']==paramId){
+        if(user[i]['id']==paramsId){
             obj=user[i];
         }
     }
@@ -86,4 +88,4 @@ function getUserbyId(req,res){
         data:obj
     });
 
-}
+};
