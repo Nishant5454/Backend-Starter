@@ -1,9 +1,6 @@
 const home=(req,res)=>{
-    res.send("THis is a homepage") 
+    res.render("touch") 
 
 } 
-const page=(req,res)=>{
-    res.send("Query Resolved")
-}
+
 export{home} 
-export{page}
