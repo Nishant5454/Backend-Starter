@@ -1,12 +1,379 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hi there Everyone is Doing Good or Not </h1>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.js" charset="utf-8"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script src="https://gitcdn.link/cdn/darkskyapp/skycons/master/skycons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="location.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  </head> 
+  <style>  
+
+html body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 0 auto;
+  padding: 0px;
+  scroll-behavior: smooth;
+}
+
+#wrapper {
+  text-align: center;
+  display: inline-block;
+  background-image: linear-gradient(to top, #051937, #2b385e, #505987, #787db3, #a3a3e1);
+  width: 100%;
+  height: 100%;
+  color: white;
+  padding-bottom: 5%;
+}
+
+#title {
+  font-size: 8vh;
+}
+
+#today {
+  font-size: 5vh;
+}
+
+#timezone {
+  margin: 5%;
+}
+
+#location {
+  font-size: 4vh;
+}
+
+#time {
+  font-size: 4vh;
+}
+
+#sum {
+font-size: 4vh;
+}
+
+#today_weather {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1%;
+}
+
+#today_weather * {
+  margin-left: 2%;
+  margin-right: 2%;
+  font-size: 3vh;
+}
+
+#today_box {
+  margin:  0 auto;
+  width: 80%;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
+#daily_box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  padding-bottom: 5vh;
+  cursor: grab;
+}
+
+#daily_box::-webkit-scrollbar { 
+    display: none; 
+}
+
+.day {
+  border: 1px solid white;
+  font-size: 2vh;
+  border-radius: 20%;
+  padding: 2%;
+  margin: 2vw;
+  height: auto;
+  min-width: 33%;
+  transition: background-color 1s;
+}
+
+#right {
+  font-size: 5vh;
+  margin-left: 5%;
+  animation: go 1s infinite ease-in;
+}
+
+@keyframes go{
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.day:hover {
+  background-color: rgba(56, 56, 56, 0.3);
+  
+}
+
+#daily_title {
+  font-size: 6vh;
+}
+
+.info_box {
+  display: inline-block;
+  padding: 1vw;
+}
+
+.info_box h2 {
+  margin: 1vw;
+}
+
+@media screen and (max-width: 768px){
+  .day {
+    min-width: 90%;
+    height: auto;
+  }
+}
+
+::selection {
+  background: #0083FF;
+  color: white;
+}
+
+
+
+
+</style>
+  <body>
+    <div id="wrapper">
+      <h1 id="title">Weather</h1>
+      <div id="today_box">
+        <h1 id="today">Today</h1>
+        <h1 id="location">Location</h1>
+        <h2 id="time">12:00</h2>
+        <h2 id="sum">Mostly Cloudy</h2>
+        <canvas id="icon" width="100%" height="100%"></canvas>
+        <div id="today_weather"> 
+          <h2 id="temp">34 F</h2>
+          <h2 id="d0_precip"><i class="fas fa-cloud-rain"></i>  20%</h2>
+          <h2 id="d0_uv"><i class="far fa-sun"></i> 2</h2>        
+        </div>
+      </div>
+      <div id="daily_wrapper">
+        <h1 id="daily_title">Daily<i class="fas fa-arrow-right" id="right"></i></h1>
+        <div id="daily_box">
+          <div class="day d0">
+            <h1 id="d0_name">Monday</h1>
+            <h2 id="d0_sum">Mostly Cloudy</h2>
+            <canvas id="d0_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d0_temp_high"><i class="fas fa-angle-up"></i>  59 F</h2>
+              <h2 id="d0_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d0_precip"><i class="fas fa-cloud-rain"></i>  20%</h2>
+              <h2 id="d0_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+          <div class="day d1">
+            <h1 id="d1_name">Tuesday</h1>
+            <h2 id="d1_sum">Rainy</h2>
+            <canvas id="d1_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d1_temp_high"><i class="fas fa-angle-up"></i>  39 F</h2>
+              <h2 id="d1_temp_low"><i class="fas fa-angle-down"></i>  23 F</h2>
+              <h2 id="d1_precip"><i class="fas fa-cloud-rain"></i>  74%</h2>
+              <h2 id="d1_uv"><i class="far fa-sun"></i> 1</h2>
+            </div>
+          </div>
+          <div class="day d2">
+            <h1 id="d2_name">Wednesday</h1>
+            <h2 id="d2_sum">Cloudy</h2>
+            <canvas id="d2_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d2_temp_high"><i class="fas fa-angle-up"></i>  99 F</h2>
+              <h2 id="d2_temp_low"><i class="fas fa-angle-down"></i>  12 F</h2>
+              <h2 id="d2_precip"><i class="fas fa-cloud-rain"></i>  1%</h2>
+              <h2 id="d2_uv"><i class="far fa-sun"></i> 6</h2>
+            </div>
+          </div>
+          <div class="day d3">
+            <h1 id="d3_name">Thursday</h1>
+            <h2 id="d3_sum">Windy</h2>
+            <canvas id="d3_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d3_temp_high"><i class="fas fa-angle-up"></i>  34 F</h2>
+              <h2 id="d3_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d3_precip"><i class="fas fa-cloud-rain"></i>  50%</h2>
+              <h2 id="d3_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+          <div class="day d4">
+            <h1 id="d4_name">Monday</h1>
+            <h2 id="d4_sum">Mostly Cloudy</h2>
+            <canvas id="d4_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d4_temp_high"><i class="fas fa-angle-up"></i>  34 F</h2>
+              <h2 id="d4_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d4_precip"><i class="fas fa-cloud-rain"></i>  50%</h2>
+              <h2 id="d4_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+          <div class="day d5">
+            <h1 id="d5_name">Monday</h1>
+            <h2 id="d5_sum">Mostly Cloudy</h2>
+            <canvas id="d5_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d5_temp_high"><i class="fas fa-angle-up"></i>  34 F</h2>
+              <h2 id="d5_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d5_precip"><i class="fas fa-cloud-rain"></i>  50%</h2>
+              <h2 id="d5_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+          <div class="day d6">
+            <h1 id="d6_name">Monday</h1>
+            <h2 id="d6_sum">Mostly Cloudy</h2>
+            <canvas id="d6_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d6_temp_high"><i class="fas fa-angle-up"></i>  34 F</h2>
+              <h2 id="d6_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d6_precip"><i class="fas fa-cloud-rain"></i>  50%</h2>
+              <h2 id="d6_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+          <div class="day d7">
+            <h1 id="d7_name">Monday</h1>
+            <h2 id="d7_sum">Mostly Cloudy</h2>
+            <canvas id="d7_icon" width="100%" height="100%"></canvas>
+            <div class="info_box">
+              <h2 id="d7_temp_high"><i class="fas fa-angle-up"></i>  34 F</h2>
+              <h2 id="d7_temp_low"><i class="fas fa-angle-down"></i>  34 F</h2>
+              <h2 id="d7_precip"><i class="fas fa-cloud-rain"></i>  50%</h2>
+              <h2 id="d7_uv"><i class="far fa-sun"></i> 2</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script> 
     
-</body>
+    window.addEventListener("load", function(){
+  //onload dropdown animation. see anime.js docs.
+  anime({
+    targets: '#wrapper',
+    translateY: -100,
+    duration: 0
+  });
+  anime({
+    targets: '#wrapper',
+    translateY: 0
+  });
+  
+  //set variables.
+  let long;
+  let lat;
+  let temp = document.getElementById('temp');
+  let fahrenheit;
+  let mins;
+  
+  //drag & move scroll.
+  const slider = document.querySelector('#daily_box');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+  
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+  })
+  
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+  })
+  
+  slider.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    slider.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  })
+  
+  //if user enabled location tracking. see navigator docs.
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(position => {
+      long = position.coords.longitude;
+      lat = position.coords.latitude;
+
+      const proxy = "https://cors-anywhere.herokuapp.com/";
+      const api = `${proxy}https://api.darksky.net/forecast/3d5656d4a69a797781afeb0bed5f8abe/${lat},${long}`;
+
+      fetch(api)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          //current day
+          const {temperature, summary, time, icon} = data.currently;
+          document.getElementById('sum').innerHTML = summary;
+          fahrenheit = Math.round(temperature);
+          temp.innerHTML = fahrenheit + " F";
+          var date = new Date(time*1000);
+          mins = date.getMinutes();
+          mins = getRealMins();
+          document.getElementById('time').innerHTML = "Local Time: " + date.getHours() + " : " + mins;
+          setIcons(icon, document.getElementById('icon'));
+
+          //daily forecast
+          //days of week array
+          var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+          var day;
+          // loop through all elemets and edit their contents.
+          for(var i = 0; i<=7; i++){
+            day = new Date(data.daily.data[i].time*1000);
+            document.getElementById('d' + i + '_name').innerHTML = weekday[day.getDay()] + " " + (day.getMonth() + 1) + "/" + day.getDate();
+            document.getElementById('d' + i + '_sum').innerHTML = data.daily.data[i].summary;
+            setIcons(data.daily.data[i].icon, document.getElementById('d' + i + '_icon'));
+            document.getElementById('d' + i + '_temp_high').innerHTML = '<i class="fas fa-angle-up"></i> ' + ' ' + Math.round(data.daily.data[i].temperatureHigh) + " F";
+            document.getElementById('d' + i + '_temp_low').innerHTML = '<i class="fas fa-angle-down"></i> ' + ' ' + Math.round(data.daily.data[i].temperatureLow) + " F";
+            document.getElementById('d' + i + '_uv').innerHTML = 'UV <i class="far fa-sun"></i> ' + ' ' + data.daily.data[i].uvIndex;
+            document.getElementById('d' + i + '_precip').innerHTML = '<i class="fas fa-cloud-rain"></i> ' + ' ' + Math.round(data.daily.data[i].precipProbability * 100) + '%';
+          }
+          });
+    });
+
+
+  }
+  //add 0 to mins if mins < 10
+  function getRealMins() {
+    if(mins < 10)
+      return "0" + mins;
+    return mins;
+  }
+
+  //set icons. src: library docs
+  function setIcons(icon, iconID) {
+    var skycons = new Skycons({"color": "white"});
+    var currentIcon = icon.replace(/-/g, "_").toUpperCase();
+    skycons.play();
+    return skycons.set(iconID, Skycons[currentIcon]);
+  }
+})
+
+    
+    </script>
+  </body>
 </html>
