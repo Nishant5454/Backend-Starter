@@ -3,4 +3,4 @@ const home=(req,res)=>{
 
 } 
 
-export{home} 
+export{home}

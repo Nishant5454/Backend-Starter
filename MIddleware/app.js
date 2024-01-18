@@ -4,12 +4,15 @@ const app=express();
 const port=4000;
 app.set("view engine",'ejs') 
 import web from './router/web.js';  
-import variable from './middle/middle.js'; 
+
+import student from './router/student.js';
+import middle from './middle/middle.js';
 app.use(variable);
-//calling the Middleware 
+//calling the Application Level Middlleware
 
 app.use('/',web); 
-app.use('/about',web)
+app.use('/about',web) 
+app.use('/event',student) 
  
  
 app.listen(port,()=>{
